@@ -2,7 +2,7 @@
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
-name: 'my_new_project'
+name: 'dbt_classiccars'
 version: '1.0.0'
 config-version: 2
 
@@ -36,18 +36,18 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 
 models:
-  snowflake_workshop:
-    # Applies to all files under models/example/
-    # staging : 前処置階層
-    staging:
-      # dbtがSnowflakeにプッシュする前にコードをコンパイルする際に、どのようにモデルをマテリアライズするかを指示
-      materialized: view
-      # snowflake上で作成したdbt用のwarehouse
-      snowflake_warehouse: DBT_WH
+  # Applies to all files under models/example/
+  # staging : 前処置階層
+  staging:
+    # dbtがSnowflakeにプッシュする前にコードをコンパイルする際に、どのようにモデルをマテリアライズするかを指示
+    materialized: view
+    # snowflake上で作成したdbt用のwarehouse
+    snowflake_warehouse: DBT_WH
+    
 
-    # marts : 集計処理階層
-    marts:
-      # dbtがSnowflakeにプッシュする前にコードをコンパイルする際に、どのようにモデルをマテリアライズするかを指示
-      materialized: table
-      # snowflake上で作成したdbt用のwarehouse
-      snowflake_warehouse: DBT_WH
+  # # marts : 集計処理階層
+  # marts:
+  #   # dbtがSnowflakeにプッシュする前にコードをコンパイルする際に、どのようにモデルをマテリアライズするかを指示
+  #   materialized: table
+  #   # snowflake上で作成したdbt用のwarehouse
+  #   snowflake_warehouse: DBT_WH

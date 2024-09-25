@@ -16,3 +16,13 @@ Try running the following commands:
 
 ## 概要
 gitへpull request
+
+## 新規schemaの自動作成
+models/staging/classiccars/classiccars_offices.sql
+```
+with source as (
+    -- 新規schemaをソーステーブルが存在するDBへ新規作成したい場合は'{{ config(schema='marketing') }}'を記載する
+    -- schema='xxx'で元schema名 + _xxxという新規schemaが作成される
+    select * from {{ source('classiccars', 'OFFICES') }}
+),
+```
