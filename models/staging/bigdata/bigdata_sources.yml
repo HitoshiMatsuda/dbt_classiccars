@@ -6,5 +6,8 @@ sources:
     schema: BIGDATA
     tables:
       # 支店テーブルへの前処理を設定する
-      - name: MYBIGDATA
+      - name: APR_2020
+        description: Caggleの大規模データセットサンプル
+
+      - name: MAR_2020
         description: Caggleの大規模データセットサンプル
