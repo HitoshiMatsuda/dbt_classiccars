@@ -39,11 +39,20 @@ models:
   # Applies to all files under models/example/
   # staging : 前処置階層
   staging:
-    # dbtがSnowflakeにプッシュする前にコードをコンパイルする際に、どのようにモデルをマテリアライズするかを指示
-    materialized: view
-    # snowflake上で作成したdbt用のwarehouse
-    snowflake_warehouse: DBT_WH
-    
+    bigdata:
+      database: DBT_DB
+      schema: BIGDATA
+      # dbtがSnowflakeにプッシュする前にコードをコンパイルする際に、どのようにモデルをマテリアライズするかを指示
+      materialized: view
+      # snowflake上で作成したdbt用のwarehouse
+      snowflake_warehouse: DBT_WH
+    classiccars:
+      database: DBT_DB
+      schema: CLASSICCARS
+      # dbtがSnowflakeにプッシュする前にコードをコンパイルする際に、どのようにモデルをマテリアライズするかを指示
+      materialized: view
+      # snowflake上で作成したdbt用のwarehouse
+      snowflake_warehouse: DBT_WH
 
   # # marts : 集計処理階層
   # marts:

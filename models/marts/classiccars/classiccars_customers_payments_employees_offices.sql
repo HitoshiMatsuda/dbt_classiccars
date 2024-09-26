@@ -1,10 +1,10 @@
 with customers_payments_employees_source as (
-    {{ config(schema='L2') }}
+    {{ config(schema='_classiccars_L2') }}
     select * from {{ ref('classiccars_customers_payments_employees') }}
 ),
 
 offices_source as (
-    {{ config(schema='L2') }}
+    {{ config(schema='_classiccars_L2') }}
     select * from {{ ref('classiccars_offices') }}
 ),
 

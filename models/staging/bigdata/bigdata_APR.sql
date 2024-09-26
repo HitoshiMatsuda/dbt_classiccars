@@ -1,5 +1,6 @@
 with source as (
-    select * from {{ source('bigdata', 'MYBIGDATA') }}
+    {{ config(schema='_bigdata_L1') }}
+    select * from {{ source('bigdata', 'APR_2020') }}
 ),
 
 trans_double as (
