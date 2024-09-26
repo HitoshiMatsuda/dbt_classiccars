@@ -1,0 +1,10 @@
+version: 2
+sources:
+  - name: bigdata
+    description: 中古車販売データスキーマのrawデータ
+    database: DBT_DB
+    schema: BIGDATA
+    tables:
+      # 支店テーブルへの前処理を設定する
+      - name: MYBIGDATA
+        description: Caggleの大規模データセットサンプル
