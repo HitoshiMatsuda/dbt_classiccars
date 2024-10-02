@@ -1,17 +1,15 @@
-with apr as (
-    {{ config(schema='_bigdata_L2') }}
-    select * from {{ ref('bigdata_APR') }}
-),
+with
+    apr as ({{ config(schema="_bigdata_L2") }} select * from {{ ref("bigdata_APR") }}),
 
-mar as (
-    {{ config(schema='_bigdata_L2') }}
-    select * from {{ ref('bigdata_Mar') }}
-),
+    mar as ({{ config(schema="_bigdata_L2") }} select * from {{ ref("bigdata_Mar") }}),
 
-union_tables as(
-    SELECT * FROM apr
-    union
-    SELECT * FROM mar
-)
+    union_tables as (
+        select *
+        from apr
+        union
+        select *
+        from mar
+    )
 
-SELECT * FROM union_tables
+select *
+from union_tables
