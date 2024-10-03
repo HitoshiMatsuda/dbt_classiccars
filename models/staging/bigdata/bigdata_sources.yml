@@ -7,7 +7,7 @@ sources:
     tables:
       # 支店テーブルへの前処理を設定する
       - name: APR_2020
-        description: Caggleの大規模データセットサンプル
+        description: Caggleの大規模データセットサンプル(4月データ)
 
       - name: MAR_2020
-        description: Caggleの大規模データセットサンプル
+        description: Caggleの大規模データセットサンプル(3月データ)
