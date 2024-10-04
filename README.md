@@ -18,8 +18,9 @@ dbtの特徴的な機能に関して下記構成に沿って検証した
 
 ## 1.dwhとの接続および権限設定
 
+
 ## 2.プロジェクトの構成
-dbtのプロジェクトは下記構成で開発を行う
+dbtのプロジェクトは下記構成で開発を行う(初回build時に自動生成される)
 ```
 dbt_training
 ├── analysis
@@ -33,6 +34,7 @@ dbt_training
 └── tests
 ```
 
+
 ## 3.モデリング
 ### 新規schemaの自動作成
 models/staging/classiccars/classiccars_offices.sql
@@ -44,7 +46,58 @@ with source as (
 ),
 ```
 
+## 4.テスト
+テストによって品質の低いデータの混入を検知してアラートしたり、データの品質を保ったりするのに使います。
+
+### テストの種類
+1. Singularテスト
+   SELECT文のみ使用可能。存在してはいけないレコードをSELECT句で記述する。レコードの取得の成否を調べるクエリを用いる。  
+   4月データの金額でマイナス価格の商品がないか確認する
+   ```sql:sig_sample_test.sql
+   select * from {{ source('bigdata', 'APR_2020') }}
+   WHERE price < 0
+   ```
+
+2. Genericテスト(標準)
+   dbt には始めから用意されている規定の Generic テストがあり、それを利用したテストを設定できます。
+   * unique
+      指定されたカラムのデータがすべてユニーク値であること
+   * not_null
+      指定されたカラムが null を含まないこと
+   * accepted_values
+      指定されたカラムには、指定された値以外を含まないこと
+   * relationships
+      指定されたカラムの値が、`to`に指定されたモデルの`field`に指定されたカラムに含まれていること  
+
+   ymlファイルへの記載で設定が可能
+   ```yml:classiccars_sources.yml
+   version: 2
+   sources:
+   - name: classiccars
+      description: 中古車販売データスキーマのrawデータ
+      database: DBT_DB
+      schema: CLASSICCARS
+      tables:
+         # 支店テーブルへの前処理を設定する
+         - name: OFFICES
+         description: 中古車販売会社の支店情報テーブル        
+         columns:
+            - name: OFFICECODE
+               description: 支店番号
+               # データテストを設定可能
+               tests: 
+               - unique
+               - not_null
+   ```
+   
+3. Genericテスト(カスタム)
+   標準のGenericテストでは不足する場合、自作のGenericテストを作成可能
+   
+
+
+
 ## 5.ドキュメント
+dbtのドキュメント機能を活用するため、以下のコマンドを実行し、ドキュメント用のファイルを生成する。
 ドキュメント生成`dbt docs generate`  
 ドキュメント表示用サーバ起動`dbt docs serve`  
 **※dbt Cloud CLIまたはdbt Coredbt docs serveを使用してローカルで開発している場合は、 コマンドを使用します。dbt Cloud IDE はこのコマンドをサポートしていません。**  
@@ -56,6 +109,15 @@ cloud IDEを使用する場合は？
 ブラウザで別タブが開きドキュメントが表示される
    ![Dashbord-Setting](images/dbt_setting_documentation_2.png)
 
+#### 静的ページとしての公開も可能
+target配下にある３つのファイルを好きなサーバで公開することが可能  
+↓対象ファイルと生成場所
+```
+target
+├── index.html
+├── manifest.json
+└── catalog.json
+```
 
 ## 10.
 **coreとcloudの大きな差分は「ジョブスケジューラの有無」**  
