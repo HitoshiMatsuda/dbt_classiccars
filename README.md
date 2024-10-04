@@ -20,6 +20,20 @@ dbtの特徴的な機能に関して下記構成に沿って検証した
 
 
 ## 2.プロジェクトの構成
+dbtから参照するDWH(Snowflake)のDB,SCHEMA,TABLE構成
+```
+DBT_DB
+├── BIGDATA
+│     ├── APR_2020
+│     └── MAR_2020
+└── CLASSICCARS
+      ├── CUSTOMERS
+      ├── EMPLOYEES
+      ├── MAPS_BRAND(seedによりdbtから生成)
+      ├── OFFICES
+      └── PAYMENTS
+```
+
 dbtのプロジェクトは下記構成で開発を行う(初回build時に自動生成される)
 ```
 dbt_training
@@ -37,13 +51,13 @@ dbt_training
 
 ## 3.モデリング
 ### 新規schemaの自動作成
-models/staging/classiccars/classiccars_offices.sql
-```
-with source as (
-    -- 新規schemaをソーステーブルが存在するDBへ新規作成したい場合は'{{ config(schema='marketing') }}'を記載する
-    -- schema='xxx'で元schema名 + _xxxという新規schemaが作成される
-    select * from {{ source('classiccars', 'OFFICES') }}
-),
+```sql:classiccars_offices.sql
+   with source as (
+      -- 新規schemaをソーステーブルが存在するDBへ新規作成したい場合は
+      -- '{{ config(schema='marketing') }}'を記載する
+      -- schema='xxx'で元schema名 + _xxxという新規schemaが作成される
+      select * from {{ source('classiccars', 'OFFICES') }}
+   ),
 ```
 
 ## 4.テスト
@@ -91,8 +105,46 @@ with source as (
    ```
    
 3. Genericテスト(カスタム)
-   標準のGenericテストでは不足する場合、自作のGenericテストを作成可能
-   
+   標準のGenericテストでは不足する場合、自作のGenericテストを作成可能  
+   ファイルの配置 : `test-path`の直下の`generic`ディレクトリ  
+   sqlファイルへの記載で設定が可能
+   ```sql:classiccars_sources.yml
+   {% test my_not_null(model, column_name) %}
+      select *
+      from {{ model }}
+      where {{ column_name }} is null
+   {% endtest %}
+   ```
+
+   カスタムテストクエリを作成したら、テスト対象となるテーブル定義しているymlファイルで呼び出す
+   ```yml:classiccars_sources.yml
+   version: 2
+   sources:
+   - name: classiccars
+      description: 中古車販売データスキーマのrawデータ
+      database: DBT_DB
+      schema: CLASSICCARS
+      tables:
+         # 支店テーブルへの前処理を設定する
+         - name: OFFICES
+         description: 中古車販売会社の支店情報テーブル        
+         columns:
+            - name: OFFICECODE
+               description: 支店番号
+               # データテストを設定可能
+               tests: 
+               - unique
+               - my_not_null←これ
+
+         - name: CUSTOMERS
+         description: 中古車販売会社の顧客情報テーブル
+         columns:
+            - name: CUSTOMERNUMBER
+               description: 顧客番号
+               tests:
+               - unique
+               - my_not_null←これ
+   ```
 
 
 
