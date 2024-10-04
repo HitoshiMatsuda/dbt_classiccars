@@ -16,6 +16,6 @@ select * from source
 {% if is_incremental() %}
 
   -- this filter will only be applied on an incremental run
-  where last_updated_date > (select max(last_updated_date) from {{ this }})
+  where update_date > (select max(update_date) from {{ this }})
 
 {% endif %}
