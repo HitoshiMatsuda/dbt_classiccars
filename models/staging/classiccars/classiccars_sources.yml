@@ -14,7 +14,7 @@ sources:
             # データテストを設定可能
             tests: 
               - unique
-              - not_null
+              - my_not_null
 
       - name: CUSTOMERS
         description: 中古車販売会社の顧客情報テーブル
@@ -23,7 +23,7 @@ sources:
             description: 顧客番号
             tests:
               - unique
-              - not_null
+              - my_not_null
 
       - name: EMPLOYEES
         description: 中古車販売会社の従業員情報テーブル
@@ -32,7 +32,7 @@ sources:
             description: 従業員番号
             tests:
               - unique
-              - not_null
+              - my_not_null
 
       - name: PAYMENTS
         description: 中古車販売会社の支払い情報テーブル
@@ -41,4 +41,4 @@ sources:
             description: 支払い番号
             tests:
               - unique
-              - not_null
+              - my_not_null
