@@ -1,7 +1,7 @@
 {{
     config(
         materialized='incremental',
-        unique_key='maps_brand'
+        unique_key='brand_id'
     )
 }}
 
