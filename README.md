@@ -9,15 +9,14 @@ dbtの特徴的な機能に関して下記構成に沿って検証した
 3. モデリング
 4. テスト
 5. ドキュメント
-6. ソース機能
-7. シード機能
-8. スナップショット機能
-9. dbt Packages
-10. 【おまけ】dbt cloudとdbt coreの違い
-11. 今回の検証で参考にしたドキュメント
+6. シード機能
+7. スナップショット機能
+8. dbt Packages
+9.  【おまけ】dbt cloudとdbt coreの違い
+10. 今回の検証で参考にしたドキュメント
 
 ## 1.dwhとの接続および権限設定
-
+~編集中~
 
 ## 2.プロジェクトの構成
 dbtから参照するDWH(Snowflake)のDB,SCHEMA,TABLE構成
@@ -50,7 +49,20 @@ dbt_training
 
 
 ## 3.モデリング
-### 新規schemaの自動作成
+dbtのデータモデリングを理解するために、階層構造を理解することが重要である   
+* Sources(ソースデータ)：  
+   TPC-Hデータセットであり、ソースYAMLファイルで定義される。
+* ステージング層のモデル：  
+   これらのモデルは、対応するソースと1対1の関係を持ち、名前を変更したり、キャストを変更したり、一般的にプロジェクトの残りの部分を通して一貫して使用される軽度の変換を実行するための場所として機能する。データ型の変換や
+* マート層のモデル：  
+   ビジネスプロセスやエンティティを表現するモデルで、ベースとなるデータソースから抽象化されている。ここで主要な変換を行う。  
+
+
+【各ファイルの配置サンプル】  
+![Dashbord-Setting](images/dbt_project_image_1.png)
+
+
+<!-- ### 新規schemaの自動作成(改修中)
 ```sql:classiccars_offices.sql
    with source as (
       -- 新規schemaをソーステーブルが存在するDBへ新規作成したい場合は
@@ -58,10 +70,11 @@ dbt_training
       -- schema='xxx'で元schema名 + _xxxという新規schemaが作成される
       select * from {{ source('classiccars', 'OFFICES') }}
    ),
-```
+``` -->
 
 ## 4.テスト
-テストによって品質の低いデータの混入を検知してアラートしたり、データの品質を保ったりするのに使います。
+テストによって品質の低いデータの混入を検知してアラートしたり、データの品質を保ったりするのに使います。  
+
 
 ### テストの種類
 1. Singularテスト
@@ -171,6 +184,11 @@ target
 └── catalog.json
 ```
 
+
+## 6.シード機能
+シードとは、dbtプロジェクト内のCSVファイルのことで、ほとんど変更のない小規模で静的なデータセットを用意・投入するケースに最適です。dbtでCSVファイルをシードとしてアップロードすることで、バージョン管理、テスト、ドキュメント作成など、他のモデルと同じベストプラクティスをCSVに適用することができます。例を挙げると、国コードのマッピングのリストや、特定のモデルから除外する従業員ユーザーIDのリストなどがあります。(ドキュメントより引用)
+
+
 ## 10.
 **coreとcloudの大きな差分は「ジョブスケジューラの有無」**  
 core : オーケストレーションツールが必要  
@@ -189,23 +207,26 @@ cloud : deploy機能でスケジューリング可能
 1. [dbt入門](https://zenn.dev/foursue/books/31456a86de5bb4/viewer/04bca4)  
    Zenn : 菱沼 雄太さん
 
-2. [Snowflake & dbt Cloudハンズオン実践](https://dev.classmethod.jp/articles/snowflake-dbt-cloud-handson-challenge-vol2/)  
+2. [Accelerating Data Teams with Snowflake and dbt Cloud Hands On Lab](https://quickstarts.snowflake.com/guide/accelerating_data_teams_with_snowflake_and_dbt_cloud_hands_on_lab/index.html?index=..%2F..index#0)  
+   Snowflake公式 QuickStart
+
+3. [Snowflake & dbt Cloudハンズオン実践](https://dev.classmethod.jp/articles/snowflake-dbt-cloud-handson-challenge-vol2/)  
    classmethod
 
-3. [dbtベストプラクティスを読む](https://zenn.dev/kyami/articles/4438f4d64185b4)  
+4. [dbtベストプラクティスを読む](https://zenn.dev/kyami/articles/4438f4d64185b4)  
    Zenn 著者 : kyamiさん
 
-4. [dbt公式docs](https://docs.getdbt.com/)  
+5. [dbt公式docs](https://docs.getdbt.com/)  
    dbt公式ドキュメント
 
-5. [dbt Cloudにおけるプランの違いについて](https://dev.classmethod.jp/articles/differences-between-plans-in-dbt-cloud/)  
+6. [dbt Cloudにおけるプランの違いについて](https://dev.classmethod.jp/articles/differences-between-plans-in-dbt-cloud/)  
    classmethod
 
-6. [dbt公式サイト](https://www.getdbt.com/pricing)  
+7. [dbt公式サイト](https://www.getdbt.com/pricing)  
    dbt公式サイト
 
-7. [dbt Core & dbt Cloud: What’s the Difference?](https://cookjack248.medium.com/dbt-core-dbt-cloud-whats-the-difference-12993acc890a)  
+8. [dbt Core & dbt Cloud: What’s the Difference?](https://cookjack248.medium.com/dbt-core-dbt-cloud-whats-the-difference-12993acc890a)  
    著者 : ??
 
-8. [dbt Coreとdbt Cloudの関係性・違いなどについてまとめてみた](https://dev.classmethod.jp/articles/differences-between-dbt-core-and-dbt-cloud/)  
+9. [dbt Coreとdbt Cloudの関係性・違いなどについてまとめてみた](https://dev.classmethod.jp/articles/differences-between-dbt-core-and-dbt-cloud/)  
    clasmethod
