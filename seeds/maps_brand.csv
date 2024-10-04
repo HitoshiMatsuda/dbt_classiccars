@@ -1,6 +1,8 @@
 brand_id,brand_name,country,update_date
-1,apple,USA,1992-08-03
-2,acer,JP,1992-08-01
-3,samsung,KOR,2024-10-04
-4,dyson,GER,1992-09-01
-5,huawei,CHI,2024-10-04
+1,garmin,CHI,2024-01-01
+2,apple,USA,1992-08-03
+3,acer,JP,1992-08-01
+4,samsung,KOR,2024-10-04
+5,dyson,GER,1992-09-01
+6,dell,JP,2000-01-01
+7,huawei,CHI,2024-10-04
