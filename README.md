@@ -47,6 +47,14 @@ with source as (
 ## 5.ドキュメント
 ドキュメント生成`dbt docs generate`  
 ドキュメント表示用サーバ起動`dbt docs serve`  
+**※dbt Cloud CLIまたはdbt Coredbt docs serveを使用してローカルで開発している場合は、 コマンドを使用します。dbt Cloud IDE はこのコマンドをサポートしていません。**  
+
+cloud IDEを使用する場合は？
+1. 「Dashbord」の「Setting」を開き、「Artifacts」のDocumentationからDeploy済みのJobを選択する
+   ![Dashbord-Setting](images/dbt_setting_documentation_1.png)
+2. 「Documentation」を選択する
+ブラウザで別タブが開きドキュメントが表示される
+   ![Dashbord-Setting](images/dbt_setting_documentation_2.png)
 
 
 ## 10.
@@ -58,7 +66,9 @@ cloud : deploy機能でスケジューリング可能
 1. クラウド統合開発環境(IDE)
 2. 
 
-
+## 12.その他
+1. 3ヶ月1度バージョンアップが走る
+2. 
 
 
 ## 11.今回の検証で参考にしたドキュメント
